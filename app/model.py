@@ -7,7 +7,7 @@ from torchvision.models import resnet18, ResNet
 from torch import nn
 from torchvision.transforms import v2 as transforms
 
-CATEGORIES = ["freshapple", "freshbanana", "freshorange", "rottenapple", "rottenbanana", "rottenorange"]
+CATEGORIES = ["freshapple", "freshbanana", "freshorange", "rottenapple", "rottenbanana", "rotten"]
  
 load_env() # This will be removed for the GCP deployment
 wandb_api_key = os.environ.get('WANDB_API_KEY')

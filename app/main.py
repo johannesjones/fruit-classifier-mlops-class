@@ -7,8 +7,8 @@ from pydantic import BaseModel # this has nothing to do with ML models
 from fastapi import FastAPI, Depends, UploadFile, File
 from torchvision.models import ResNet
 from PIL import Image
-from app.model import load_model, load_transforms, CATEGORIES
-from torchvision.transforms import v2 as transforms
+from app.model import load_model, load_transform, CATEGORIES
+from torchvision.transforms import v2 as transform
 import torch.nn.functional as F
 
 # This is a data model for the result 
@@ -31,14 +31,14 @@ def read_root():
 async def predict(
         input_image: UploadFile = File(...),
         model: ResNet = Depends(load_model),
-        transforms: transforms.Compose = Depends(load_transforms)
+        transforms: transform.Compose = Depends(load_transform)
 ) -> Result:
     image = Image.open(io.BytesIO(await input_image.read()))
 
     # Here we delete the alpha channel, the model doesn't use it
     # and will complain if the input has it     
     if image.mode == 'RGBA':
-        image.convert('RGB')
+        image = image.convert('RGB')
 
     # Here we add a batch dimension of 1 
     image = transforms(image).unsqueeze(0)
