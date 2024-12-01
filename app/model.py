@@ -18,7 +18,11 @@ def download_artifact():
     wandb_model_name = os.environ.get('WANDB_MODEL_NAME')
     wandb_model_version = os.environ.get('WANDB_MODEL_VERSION')
 
-    artifact_path = f'{wandb_org}/{wandb_project}/{wandb_model_name}:{wandb_model_version}'
+    artifact_path = f"{wandb_org}/{wandb_project}/{wandb_model_name}:{wandb_model_version}"
+
+    wandb.login()
+    artifact = wandb.Api().artifact(artifact_path, type='model')
+    artifact.download(root=MODELS_DIR)
 
     print(artifact_path)
 
